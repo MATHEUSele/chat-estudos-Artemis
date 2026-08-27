@@ -1,35 +1,65 @@
-# Artemis
+# Artemis 2.0 🌌
 
-web scraping python 
+**Artemis 2.0** é a evolução de um projeto acadêmico de Inteligência Artificial para um assistente virtual moderno, performático e visualmente impressionante. Originalmente idealizado no segundo período do curso de Sistemas de Informação, a arquitetura foi reconstruída do zero para refletir padrões de excelência da indústria (MVC, microsserviços, assincronicidade e WebSockets).
 
+## 🚀 Arquitetura e Tecnologias
 
+O projeto é dividido em duas camadas principais:
 
-|o projeto artemis e uma programa focado em
-ser uma assitente de busca rapida na internet|
+### 1. Frontend Premium (Interface e Interatividade)
+- **React + Vite:** Para uma construção ultrarrápida e componentizada.
+- **Tailwind CSS & Glassmorphism:** Estilização moderna com temas escuros (Dark Mode), transparências translúcidas e uma paleta com toques "neon".
+- **Framer Motion:** Animações fluidas e efeitos de Parallax responsivos à rolagem (Scroll).
+- **Zustand:** Gerenciamento de estado global leve e sem boilerplate.
+- **Microfone Opus:** Captura de voz otimizada para o codec `audio/webm;codecs=opus`, minimizando a latência.
 
+### 2. Backend Robusto (Lógica e Integração IA)
+- **FastAPI (Python):** Substituiu o framework síncrono legado. Servidor extremamente rápido que roda de forma assíncrona.
+- **SQLAlchemy + aiosqlite:** Banco de dados SQLite operando 100% de forma assíncrona (`async/await`) sem travar o Event Loop.
+- **WebSockets (`wss://`):** Túnel bidirecional em tempo real entre o usuário e a IA. Sem necessidade de long-polling.
+- **Google Gemini (Interactions API):** Integração de ponta com o modelo *Gemini 1.5 Flash*, suportando Tool Calling nativo (Google Search) para enriquecer o contexto antes de responder.
+- **SlowAPI:** Rate limiting seguro para proteção da API.
 
-|a artemis recebe uma entrada de aldio trescreve para texto e
-buscas a principais respostas relacionadas| 
+---
 
-###
+## 🛠️ Como Instalar e Rodar Localmente
 
-<div align="left">
-  <img src="https://img.shields.io/static/v1?message=Youtube&logo=youtube&label=&color=FF0000&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="youtube logo"  />
-  <img src="https://img.shields.io/static/v1?message=Instagram&logo=instagram&label=&color=E4405F&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="instagram logo"  />
-  <img src="https://img.shields.io/static/v1?message=Twitch&logo=twitch&label=&color=9146FF&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="twitch logo"  />
-  <img src="https://img.shields.io/static/v1?message=Discord&logo=discord&label=&color=7289DA&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="discord logo"  />
-  <img src="https://img.shields.io/static/v1?message=Gmail&logo=gmail&label=&color=D14836&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="gmail logo"  />
-  <img src="https://img.shields.io/static/v1?message=LinkedIn&logo=linkedin&label=&color=0077B5&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="linkedin logo"  />
-</div>
+Todo o fluxo de desenvolvimento foi simplificado utilizando o `Make`.
 
-###
+### 🪟 Para usuários Windows:
 
-<div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=MATHEUSele&hide_title=false&hide_rank=false&show_icons=true&include_all_commits=true&count_private=true&disable_animations=false&theme=dracula&locale=en&hide_border=false&order=1" height="150" alt="stats graph"  />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs?username=MATHEUSele&locale=en&hide_title=false&layout=compact&card_width=320&langs_count=5&theme=dracula&hide_border=false&order=2" height="150" alt="languages graph"  />
-</div>
+1. **Instalar Dependências (Frontend e Backend)**
+```bash
+make setup-W
+```
 
-###
+2. **Subir os Servidores (Inicia React e FastAPI juntos)**
+```bash
+make run-W
+```
 
+### 🐧 Para usuários Linux/macOS:
 
+1. **Instalar Dependências**
+```bash
+make setup-L
+```
 
+2. **Subir os Servidores**
+```bash
+make run-L
+```
+
+---
+
+## 🔐 Configuração do Ambiente
+
+Na pasta `/backend`, crie ou verifique o arquivo `.env`. Ele deve conter a chave de autenticação do Google AI Studio para que o servidor consiga se comunicar com o modelo Gemini.
+
+```env
+GEMINI_API_KEY=sua_chave_aqui
+```
+
+---
+
+*Projeto desenvolvido com dedicação e foco em design premium e alta performance.*
