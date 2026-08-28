@@ -19,8 +19,10 @@ setup-W:
 
 run-W:
 	@echo "Iniciando Backend e Frontend (Windows)..."
-	start cmd /k "cd $(BACKEND_DIR) && .\venv\Scripts\activate && uvicorn main:app --reload"
-	start cmd /k "cd $(FRONTEND_DIR) && $(NPM) run dev"
+	@echo "🌐 Frontend: http://localhost:5173/Art-mis/"
+	@echo "⚙️  Backend:  http://127.0.0.1:8000"
+	cmd /c start cmd /k "cd $(BACKEND_DIR) && .\venv\Scripts\activate && uvicorn main:app --reload"
+	cmd /c start cmd /k "cd $(FRONTEND_DIR) && $(NPM) run dev"
 
 # ==========================================
 # LINUX / MAC COMMANDS
@@ -33,6 +35,8 @@ setup-L:
 
 run-L:
 	@echo "Iniciando Backend e Frontend (Linux)..."
+	@echo "🌐 Frontend: http://localhost:5173/Art-mis/"
+	@echo "⚙️  Backend:  http://127.0.0.1:8000"
 	# Starts backend in background, then frontend
 	(cd $(BACKEND_DIR) && source venv/bin/activate && uvicorn main:app --reload) & \
 	(cd $(FRONTEND_DIR) && $(NPM) run dev)

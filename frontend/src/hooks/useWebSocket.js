@@ -36,6 +36,10 @@ export function useWebSocket() {
         } else if (data.type === 'end') {
           setThinking(false);
           setSearching(false);
+        } else if (data.type === 'error') {
+          updateLastMessage(`\n[Erro]: ${data.content}`);
+          toast.error("Erro na comunicação com a IA");
+          setThinking(false);
         }
       } catch (e) {
         // Fallback se não for JSON (ex: string pura enviada na prototipagem)

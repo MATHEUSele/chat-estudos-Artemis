@@ -1,6 +1,13 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-artemis-dark: #0B0F19;
+  --color-artemis-panel: rgba(17, 24, 39, 0.7);
+  --color-artemis-primary: #6366f1;
+  --color-artemis-secondary: #a855f7;
+  --background-image-hero-glow: conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 180deg, #e92a67 360deg);
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
 
 @layer base {
   body {
