@@ -1,12 +1,13 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
-    GEMINI_API_KEY: str
-    FRONTEND_URL: str = "http://localhost:5173" # Vite default
-    
-    # Proteção de ambiente
+    # Motor de IA — Ollama (rodando no host, acessível via host-gateway no Docker)
+    OLLAMA_BASE_URL: str = "http://host.docker.internal:11434"
+    OLLAMA_MODEL: str = "qwen2.5-coder:7b"
+
+    # URL do frontend (CORS)
+    FRONTEND_URL: str = "http://localhost:5173"
+
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
-# Instanciação global e segura
-# Se a GEMINI_API_KEY não estiver no .env, o servidor quebrará aqui com um erro claro.
 settings = Settings()

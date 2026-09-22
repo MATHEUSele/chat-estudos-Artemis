@@ -7,6 +7,14 @@ export default defineConfig({
   base: '/Art-mis/',
   server: {
     port: 5173,
-    // proxy se fosse rodar backend remoto em dev
+    proxy: {
+      // Proxy WebSocket para o backend em modo dev (fora do Docker)
+      '/ws': {
+        target: 'ws://localhost:8000',
+        ws: true,
+        changeOrigin: true,
+      },
+    }
   }
 })
+

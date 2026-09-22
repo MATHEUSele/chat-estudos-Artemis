@@ -48,3 +48,30 @@ build:
 	@echo "Gerando build estático do Frontend para GitHub Pages..."
 	cd $(FRONTEND_DIR) && $(NPM) run build
 	@echo "Build concluído! A pasta $(FRONTEND_DIR)/dist está pronta para o GitHub Pages."
+
+# ==========================================
+# DOCKER COMMANDS
+# ==========================================
+docker-build:
+	@echo "🔨 Buildando containers Docker..."
+	docker compose build
+
+docker-up:
+	@echo "🐳 Subindo Artemis no Docker..."
+	docker compose up -d
+	@echo ""
+	@echo "✅ Artemis está rodando!"
+	@echo "🌐 Frontend: http://localhost/Art-mis/"
+	@echo "⚙️  Backend:  http://localhost:8000"
+	@echo "📋 Logs:     make docker-logs"
+
+docker-down:
+	@echo "🛑 Derrubando containers..."
+	docker compose down
+
+docker-logs:
+	docker compose logs -f
+
+docker-restart:
+	docker compose down
+	docker compose up -d

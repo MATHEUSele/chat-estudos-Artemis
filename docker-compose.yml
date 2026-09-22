@@ -1,0 +1,26 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: artemis-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    volumes:
+      # Persiste o banco de dados SQLite entre restarts do container
+      - ./backend/artemis.db:/app/artemis.db
+    extra_hosts:
+      # Permite que o container acesse o Ollama rodando no host Windows
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: artemis-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

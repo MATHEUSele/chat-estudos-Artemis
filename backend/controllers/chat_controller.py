@@ -1,5 +1,5 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from models.gemini_agent import stream_chat_response
+from models.ollama_agent import stream_chat_response
 from database import AsyncSessionLocal
 from models.session_model import Message
 import logging
