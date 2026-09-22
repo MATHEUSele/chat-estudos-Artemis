@@ -1,80 +1,70 @@
-# Artemis 2.01 🌌
+# Artemis 2.02 🌌
 
-**Artemis 2.01** é a evolução de um projeto acadêmico de Inteligência Artificial para um assistente virtual moderno, performático e visualmente impressionante. Originalmente idealizado no segundo período do curso de Sistemas de Informação, a arquitetura foi reconstruída do zero para refletir padrões de excelência da indústria (MVC, microsserviços, assincronicidade e WebSockets).
+**Artemis 2.02** é a evolução de um projeto acadêmico de Inteligência Artificial para um assistente virtual moderno, performático e visualmente impressionante. Originalmente idealizado no segundo período do curso de Sistemas de Informação, a arquitetura foi reconstruída do zero para refletir padrões de excelência da indústria (MVC, microsserviços, assincronicidade, WebSockets e Containerização).
 
 ## 🚀 Arquitetura e Tecnologias
 
-O projeto é dividido em duas camadas principais:
+O projeto é dividido em camadas isoladas rodando em containers Docker:
 
 ### 1. Frontend Premium (Interface e Interatividade)
 - **React + Vite:** Construção ultrarrápida, componentizada e tipada com **TypeScript**.
-- **Tailwind CSS 4 & Glassmorphism:** Estilização moderna com temas escuros (Dark Mode), transparências translúcidas e toques "neon". Utiliza `clsx` e `tailwind-merge` para classes dinâmicas.
-- **Framer Motion:** Animações fluidas e efeitos responsivos.
-- **Zustand:** Gerenciamento de estado global leve e sem boilerplate.
-- **React Router DOM:** Roteamento de páginas fluido no lado do cliente.
-- **Lucide React & Sonner:** Ícones modernos e sistema de notificações (toasts) elegante.
+- **Tailwind CSS 4 & Glassmorphism:** Estilização moderna com temas escuros (Dark Mode), transparências translúcidas e toques "neon".
+- **Nginx:** Servidor web reverso de altíssima performance para servir os builds estáticos do SPA de forma containerizada.
+- **Framer Motion & Zustand:** Animações fluidas e gerenciamento de estado global.
 - **Microfone Opus:** Captura de voz otimizada para o codec `audio/webm;codecs=opus`, minimizando latência.
 
-### 2. Backend Robusto (Lógica e Integração IA)
-- **FastAPI (Python):** Servidor extremamente rápido que roda de forma assíncrona, usando **Pydantic** para validação de dados rigorosa.
-- **SQLAlchemy + aiosqlite:** Banco de dados SQLite operando 100% de forma assíncrona (`async/await`) sem travar o Event Loop.
-- **WebSockets (`wss://`):** Túnel bidirecional em tempo real entre o usuário e a IA.
-- **Google Gemini:** Integração de ponta via SDK oficial (`google-genai`), suportando Tool Calling nativo para enriquecer o contexto.
+### 2. Backend Robusto (Lógica e API)
+- **FastAPI (Python):** Servidor rápido e operando de forma assíncrona.
+- **SQLAlchemy + aiosqlite:** Banco de dados SQLite persistente através de Volumes Docker.
+- **WebSockets (`ws://`):** Túnel bidirecional em tempo real entre o usuário e o servidor de IA.
 - **SlowAPI:** Rate limiting seguro (`5/minute` na rota health check) para proteção da API.
-- **CORS Configurado:** Suporte nativo para deploy do frontend via GitHub Pages.
+
+### 3. Motor de Inteligência Artificial (Ollama)
+- Substituímos dependências de APIs externas (como o Google Gemini) por uma infraestrutura **100% local e privada**.
+- Motor integrado via container dedicado rodando o **Ollama**.
+- Modelo padrão altamente focado em código e conversação em português: `qwen2.5-coder:7b`.
 
 ---
 
 ## 🛠️ Como Instalar e Rodar Localmente
 
-Todo o fluxo de desenvolvimento foi simplificado utilizando o utilitário `Make`.
+Todo o fluxo de desenvolvimento e deploy agora foi padronizado utilizando **Docker** e automatizado com o utilitário `Make`.
 
-### 🪟 Para usuários Windows:
+### 🐳 Executando a Aplicação (Recomendado)
 
-1. **Instalar Dependências (Frontend e Backend)**
-```bash
-make setup-W
-```
+1. **Subir os Servidores (Construir e Iniciar os Containers)**
+   Na raiz do projeto, execute:
+   ```bash
+   make docker-up
+   ```
 
-2. **Subir os Servidores (Inicia React e FastAPI juntos)**
-```bash
-make run-W
-```
+2. **Baixar o Modelo de IA (Apenas na 1ª execução)**
+   Para que o chat funcione, o Ollama precisa baixar o modelo local (~4.7GB).
+   ```bash
+   make ollama-pull
+   ```
 
-### 🐧 Para usuários Linux/macOS:
+3. **Acessar a Plataforma**
+   - 🌐 **Chat Interface:** http://localhost/Art-mis/
+   - ⚙️ **Backend Health:** http://localhost:8000/health
 
-1. **Instalar Dependências**
-```bash
-make setup-L
-```
-
-2. **Subir os Servidores**
-```bash
-make run-L
-```
-
----
-
-## 🌐 Deploy no GitHub Pages
-
-O projeto possui um comando automatizado para gerar o build estático do frontend pronto para o GitHub Pages:
-
-```bash
-make build
-```
-*(A pasta `frontend/dist` será gerada contendo os arquivos prontos para deploy).*
+*(Comandos auxiliares: `make docker-down` para parar, `make docker-build` para recompilar e `make docker-logs` para ver o que está rodando em tempo real).*
 
 ---
 
 ## 🔐 Configuração do Ambiente
 
-Na pasta `/backend`, crie ou verifique o arquivo `.env`. Ele deve conter a chave de autenticação do Google AI Studio para que o servidor consiga se comunicar com o modelo Gemini, e a URL do frontend.
+Na pasta `/backend`, crie ou verifique o arquivo `.env` (baseado no `backend/.env.example`). O arquivo mudou e não exige mais chaves de API:
 
 ```env
-GEMINI_API_KEY=sua_chave_aqui
-FRONTEND_URL=http://localhost:5173
+# Motor de IA — Ollama container (mesma rede Docker)
+OLLAMA_BASE_URL=http://ollama:11434
+OLLAMA_MODEL=qwen2.5-coder:7b
+
+# URL do frontend para regras de CORS
+FRONTEND_URL=http://localhost
 ```
 
 ---
 
-*Projeto desenvolvido com dedicação e foco em design premium e alta performance.*
+*Projeto desenvolvido com dedicação e foco em design premium, IA open-source e alta performance.*
