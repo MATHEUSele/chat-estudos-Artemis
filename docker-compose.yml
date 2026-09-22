@@ -1,4 +1,19 @@
 services:
+  ollama:
+    image: ollama/ollama
+    container_name: artemis-ollama
+    volumes:
+      - ollama_data:/root/.ollama   # persiste o modelo entre restarts
+    ports:
+      - "11434:11434"               # expõe para o host (útil para testes)
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 10s
+    restart: unless-stopped
+
   backend:
     build:
       context: ./backend
@@ -8,11 +23,10 @@ services:
     env_file:
       - ./backend/.env
     volumes:
-      # Persiste o banco de dados SQLite entre restarts do container
-      - ./backend/artemis.db:/app/artemis.db
-    extra_hosts:
-      # Permite que o container acesse o Ollama rodando no host Windows
-      - "host.docker.internal:host-gateway"
+      - ./backend/artemis.db:/app/artemis.db  # persiste o banco de dados SQLite
+    depends_on:
+      ollama:
+        condition: service_healthy            # aguarda Ollama estar pronto
     restart: unless-stopped
 
   frontend:
@@ -24,3 +38,6 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+
+volumes:
+  ollama_data:   # volume nomeado — modelo persiste entre restarts

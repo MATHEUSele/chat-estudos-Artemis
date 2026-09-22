@@ -75,3 +75,12 @@ docker-logs:
 docker-restart:
 	docker compose down
 	docker compose up -d
+
+ollama-pull:
+	@echo "📦 Baixando modelo qwen2.5-coder:7b no container Ollama..."
+	@echo "⏳ Isso pode demorar (~4.7GB)..."
+	docker exec artemis-ollama ollama pull qwen2.5-coder:7b
+	@echo "✅ Modelo pronto!"
+
+ollama-list:
+	docker exec artemis-ollama ollama list
