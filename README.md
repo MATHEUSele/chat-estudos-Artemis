@@ -21,16 +21,46 @@ O projeto é dividido em camadas isoladas rodando em containers Docker:
 
 ### 3. Motor de Inteligência Artificial (Ollama)
 - Substituímos dependências de APIs externas (como o Google Gemini) por uma infraestrutura **100% local e privada**.
-- Motor integrado via container dedicado rodando o **Ollama**.
-- Modelo padrão altamente focado em código e conversação em português: `qwen2.5-coder:7b`.
+- Suporta execução via **Ollama nativo** na máquina local (recomendado para testes rápidos com modelos leves como `qwen2.5:0.5b`) ou via **container Docker** (`qwen2.5-coder:7b`).
+- 📖 Veja os detalhes completos de configuração e persistência da LLM em [LLM_LOCAL.md](./LLM_LOCAL.md).
 
 ---
 
 ## 🛠️ Como Instalar e Rodar Localmente
 
-Todo o fluxo de desenvolvimento e deploy agora foi padronizado utilizando **Docker** e automatizado com o utilitário `Make`.
+Você pode rodar o Artemis de duas formas: **nativamente no Windows (sem Docker)** ou **via Docker**.
 
-### 🐳 Executando a Aplicação (Recomendado)
+### ⚡ Opção 1: Execução Local Nativa (Windows / Sem Docker — Mais Rápida)
+
+Ideal para desenvolvimento e testes rápidos utilizando o Ollama instalado diretamente na máquina e o modelo leve `qwen2.5:0.5b` (~397 MB), que fica persistido em disco (`%USERPROFILE%\.ollama\models`).
+
+1. **Configurar dependências (apenas na 1ª execução)**
+   ```bash
+   make setup-W
+   ```
+
+2. **Configurar o `backend/.env`**
+   ```env
+   OLLAMA_BASE_URL=http://localhost:11434
+   OLLAMA_MODEL=qwen2.5:0.5b
+   FRONTEND_URL=http://localhost:5173
+   ```
+   *(Se a variável `OLLAMA_HOST` do Windows apontar para outro IP, use esse IP em `OLLAMA_BASE_URL`. Veja [LLM_LOCAL.md](./LLM_LOCAL.md)).*
+
+3. **Iniciar Ollama + Backend + Frontend**
+   ```powershell
+   .\start-local.ps1
+   ```
+   Ou, se o Ollama já estiver rodando:
+   ```bash
+   make run-W
+   ```
+
+4. **Acessar a Plataforma**
+   - 🌐 **Chat Interface:** http://localhost:5173/Art-mis/
+   - ⚙️ **Backend Health:** http://127.0.0.1:8000/health
+
+### 🐳 Opção 2: Executando com Docker
 
 1. **Subir os Servidores (Construir e Iniciar os Containers)**
    Na raiz do projeto, execute:

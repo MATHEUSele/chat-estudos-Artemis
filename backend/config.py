@@ -1,9 +1,9 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
-    # Motor de IA — Ollama (rodando no host, acessível via host-gateway no Docker)
-    OLLAMA_BASE_URL: str = "http://host.docker.internal:11434"
-    OLLAMA_MODEL: str = "qwen2.5-coder:7b"
+    # Motor de IA — Ollama (rodando no host Windows)
+    OLLAMA_BASE_URL: str = "http://localhost:11434"
+    OLLAMA_MODEL: str = "qwen2.5-coder:1.5b"
 
     # URL do frontend (CORS)
     FRONTEND_URL: str = "http://localhost:5173"
