@@ -1,4 +1,4 @@
-# Artemis 2.02 🌌
+# Artemis 2.0A 🌌
 
 **Artemis 2.02** é a evolução de um projeto acadêmico de Inteligência Artificial para um assistente virtual moderno, performático e visualmente impressionante. Originalmente idealizado no segundo período do curso de Sistemas de Informação, a arquitetura foi reconstruída do zero para refletir padrões de excelência da indústria (MVC, microsserviços, assincronicidade, WebSockets e Containerização).
 
