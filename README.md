@@ -60,7 +60,10 @@ Ideal para desenvolvimento e testes rápidos utilizando o Ollama instalado diret
    - 🌐 **Chat Interface:** http://localhost:5173/Art-mis/
    - ⚙️ **Backend Health:** http://127.0.0.1:8000/health
 
-### 🐳 Opção 2: Executando com Docker
+### 🐳 Opção 2: Executando com Docker *(🚧 Em desenvolvimento — criação da persistência no Docker)*
+
+> [!NOTE]
+> **Em desenvolvimento:** A configuração de persistência completa para o ambiente Docker (volumes, modelo leve padrão e fluxo automatizado) está em andamento. Por enquanto, utilize a **Opção 1 (Execução Local Nativa)** acima.
 
 1. **Subir os Servidores (Construir e Iniciar os Containers)**
    Na raiz do projeto, execute:
