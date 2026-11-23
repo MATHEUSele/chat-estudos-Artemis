@@ -5,7 +5,7 @@ from config import settings
 async def stream_chat_response(prompt: str, interaction_id: str = None):
     """
     Função geradora que se comunica com o Ollama (rodando no host)
-    e faz streaming da resposta chunk a chunk via WebSocket.
+    e faz streaming da resposta chunk a chunk para o endpoint SSE.
     """
     url = f"{settings.OLLAMA_BASE_URL}/api/generate"
     payload = {
@@ -15,7 +15,8 @@ async def stream_chat_response(prompt: str, interaction_id: str = None):
     }
 
     try:
-        async with httpx.AsyncClient(timeout=120.0) as client:
+        timeout = httpx.Timeout(connect=10.0, read=120.0, write=10.0, pool=10.0)
+        async with httpx.AsyncClient(timeout=timeout) as client:
             async with client.stream("POST", url, json=payload) as response:
                 response.raise_for_status()
                 async for line in response.aiter_lines():

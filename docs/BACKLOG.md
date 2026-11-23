@@ -8,7 +8,7 @@ Evoluir o protótipo de execução local para uma aplicação **pronta para prod
 ### 1️⃣ Arquitetura de Chat – SSE vs WebSocket
 | # | eprint (título do PR) | Descrição resumida | ✅ Critérios de aceitação |
 |---|-----------------------|-------------------|---------------------------|
-| 1.1 | **feat: migrar chat WebSocket → Server‑Sent Events (SSE)** | Substituir a rota WebSocket por um endpoint `/api/chat/stream` que devolve `text/event-stream`. SSE simplifica a passagem por proxies/Nginx e reduz overhead de conexão. | • Endpoint retorna SSE <br>• Front‑end consome via `EventSource` <br>• Testes unitários confirmam fluxo de tokens |
+| 1.1 | ✅ **feat: migrar chat WebSocket → Server‑Sent Events (SSE)** *(Concluído)* | Substituir a rota WebSocket por um endpoint `/api/chat/stream` que devolve `text/event-stream`. SSE simplifica a passagem por proxies/Nginx e reduz overhead de conexão. | • Endpoint retorna SSE <br>• Front‑end consome via `EventSource` <br>• Testes unitários confirmam fluxo de tokens |
 | 1.2 | **refactor: consolidar modelo de mensagem no backend** | Criar `ChatMessage` e `ChatRequest` (Pydantic) em `schemas/chat_schema.py`; usar em todos os pontos (SSE, WebSocket legacy). | • Validação de payload <br>• Docs OpenAPI mostrados corretamente |
 | 1.3 | **fix: tratamento de desconexão do cliente** | Dentro do gerador SSE, checar `await request.is_disconnected()` a cada chunk e abortar a chamada a Ollama. | • Logs mostram “client disconnected” <br>• Consumo de recursos do Ollama cessado ao abortar |
 
