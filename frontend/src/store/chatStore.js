@@ -13,9 +13,12 @@ export const useChatStore = create((set) => ({
   
   updateLastMessage: (chunk) => set((state) => {
     const newMessages = [...state.messages];
-    const lastMsg = newMessages[newMessages.length - 1];
-    if (lastMsg && lastMsg.role === 'model') {
-      lastMsg.content += chunk;
+    const lastIdx = newMessages.length - 1;
+    if (lastIdx >= 0 && newMessages[lastIdx].role === 'model') {
+      newMessages[lastIdx] = {
+        ...newMessages[lastIdx],
+        content: newMessages[lastIdx].content + chunk,
+      };
     }
     return { messages: newMessages };
   }),

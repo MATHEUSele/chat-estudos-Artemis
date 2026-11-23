@@ -8,13 +8,15 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      // Proxy WebSocket para o backend em modo dev (fora do Docker)
-      '/ws': {
-        target: 'ws://localhost:8000',
-        ws: true,
+      // Proxy SSE/REST para o backend em modo dev (fora do Docker)
+      '/api': {
+        target: 'http://127.0.0.1:8000',
         changeOrigin: true,
       },
-    }
-  }
+      '/health': {
+        target: 'http://127.0.0.1:8000',
+        changeOrigin: true,
+      },
+    },
+  },
 })
-

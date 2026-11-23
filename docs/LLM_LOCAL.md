@@ -20,7 +20,7 @@ O fluxo entre a interface web e o modelo local segue três etapas:
    A classe `Settings` (`pydantic_settings`) carrega essas variáveis do arquivo `.env` ao iniciar o FastAPI e as disponibiliza em `settings.OLLAMA_BASE_URL` e `settings.OLLAMA_MODEL`.
 
 3. **Chamada em Streaming (`backend/models/ollama_agent.py`):**
-   Quando uma mensagem chega pelo WebSocket, a função `stream_chat_response` envia um `POST` assíncrono (`httpx`) para `{OLLAMA_BASE_URL}/api/generate` com `"stream": true` e transmite cada chunk (`text_chunk`) de volta para o frontend em tempo real.
+   Quando uma mensagem chega no endpoint SSE (`/api/chat/stream`), a função `stream_chat_response` envia um `POST` assíncrono (`httpx`) para `{OLLAMA_BASE_URL}/api/generate` com `"stream": true` e transmite cada chunk (`text_chunk`) de volta para o frontend em tempo real via `EventSource`.
 
 ---
 

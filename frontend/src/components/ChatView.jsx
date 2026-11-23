@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useChatStore } from '../store/chatStore';
-import { useWebSocket } from '../hooks/useWebSocket';
+import { useChatStream } from '../hooks/useChatStream';
 import { useAudioRecorder } from '../hooks/useAudioRecorder';
 import { Mic, Send, Bot, User, Search, Square, Sparkles, Code, Image as ImageIcon, FileText } from 'lucide-react';
 import { toast } from 'sonner';
@@ -16,7 +16,7 @@ export default function ChatView() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isThinking]);
 
-  const { isConnected, sendMessage } = useWebSocket();
+  const { sendMessage } = useChatStream();
   const handleAudioReady = (audioBlob) => {
     toast.success("Áudio processado (Integração na Fase 5)");
   };

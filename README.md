@@ -1,6 +1,6 @@
 # Artemis 2.0A 🌌
 
-**Artemis 2.02** é a evolução de um projeto acadêmico de Inteligência Artificial para um assistente virtual moderno, performático e visualmente impressionante. Originalmente idealizado no segundo período do curso de Sistemas de Informação, a arquitetura foi reconstruída do zero para refletir padrões de excelência da indústria (MVC, microsserviços, assincronicidade, WebSockets e Containerização).
+**Artemis 2.02** é a evolução de um projeto acadêmico de Inteligência Artificial para um assistente virtual moderno, performático e visualmente impressionante. Originalmente idealizado no segundo período do curso de Sistemas de Informação, a arquitetura foi reconstruída do zero para refletir padrões de excelência da indústria (MVC, microsserviços, assincronicidade, Server-Sent Events (SSE) e Containerização).
 
 ---
 
@@ -9,9 +9,10 @@
 ```text
 chat-estudos-Artemis/
 ├── backend/                # API FastAPI, SQLite (aiosqlite) e cliente Ollama
-│   ├── controllers/        # Rotas REST e WebSocket (/ws/chat)
+│   ├── controllers/        # Rotas REST e SSE (/api/chat/stream)
 │   ├── models/             # Agente Ollama e modelos ORM (SQLAlchemy)
 │   ├── schemas/            # Schemas Pydantic
+│   ├── tests/              # Testes unitários (pytest)
 │   ├── config.py           # Leitura de variáveis de ambiente (.env)
 │   ├── database.py         # Conexão assíncrona com SQLite
 │   ├── main.py             # Entrypoint da API FastAPI
@@ -21,7 +22,7 @@ chat-estudos-Artemis/
 │   ├── public/             # Arquivos estáticos (favicon)
 │   ├── src/
 │   │   ├── components/     # ChatView e Sidebar
-│   │   ├── hooks/          # WebSocket e gravação de áudio
+│   │   ├── hooks/          # Stream SSE (EventSource) e gravação de áudio
 │   │   └── store/          # Estado global com Zustand
 │   ├── nginx.conf          # Configuração Nginx para produção
 │   └── Dockerfile          # Multi-stage build do frontend
@@ -48,7 +49,7 @@ chat-estudos-Artemis/
 ### 2. Backend Robusto (Lógica e API)
 - **FastAPI (Python):** Servidor rápido e operando de forma assíncrona.
 - **SQLAlchemy + aiosqlite:** Banco de dados SQLite persistente.
-- **WebSockets (`ws://`):** Túnel bidirecional em tempo real entre o usuário e o servidor de IA.
+- **Server-Sent Events (`SSE`):** Streaming em tempo real unidirecional (`/api/chat/stream`) consumido via `EventSource` no frontend.
 - **SlowAPI:** Rate limiting seguro (`5/minute` na rota `/health`) para proteção da API.
 
 ### 3. Motor de Inteligência Artificial (Ollama)
