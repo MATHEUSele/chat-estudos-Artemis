@@ -38,7 +38,7 @@ O fluxo entre a interface web e o modelo local segue três etapas:
 Você pode subir **Ollama + Backend + Frontend** de uma só vez executando o script PowerShell na raiz do projeto:
 
 ```powershell
-.\start-local.ps1
+.\scripts\start-local.ps1
 ```
 
 O script faz automaticamente:
