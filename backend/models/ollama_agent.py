@@ -1,15 +1,22 @@
-import httpx
 import json
+from typing import Optional
+import httpx
 from config import settings
+from schemas.chat_schema import ChatStreamEvent
 
-async def stream_chat_response(prompt: str, interaction_id: str = None):
+
+async def stream_chat_response(
+    prompt: str,
+    interaction_id: Optional[str] = None,
+    model: Optional[str] = None,
+):
     """
     Função geradora que se comunica com o Ollama (rodando no host)
     e faz streaming da resposta chunk a chunk para o endpoint SSE.
     """
     url = f"{settings.OLLAMA_BASE_URL}/api/generate"
     payload = {
-        "model": settings.OLLAMA_MODEL,
+        "model": model or settings.OLLAMA_MODEL,
         "prompt": prompt,
         "stream": True,
     }
@@ -23,16 +30,22 @@ async def stream_chat_response(prompt: str, interaction_id: str = None):
                     if line.strip():
                         data = json.loads(line)
                         if data.get("response"):
-                            yield json.dumps({"type": "text_chunk", "content": data["response"]})
+                            yield ChatStreamEvent(
+                                type="text_chunk", content=data["response"]
+                            ).model_dump_json()
                         if data.get("done"):
                             break
     except httpx.ConnectError:
-        yield json.dumps({
-            "type": "error",
-            "content": f"Não foi possível conectar ao Ollama em {settings.OLLAMA_BASE_URL}. "
-                       f"Verifique se o Ollama está rodando e configurado com OLLAMA_HOST=0.0.0.0:11434."
-        })
+        yield ChatStreamEvent(
+            type="error",
+            content=(
+                f"Não foi possível conectar ao Ollama em {settings.OLLAMA_BASE_URL}. "
+                "Verifique se o Ollama está rodando e configurado com OLLAMA_HOST=0.0.0.0:11434."
+            ),
+        ).model_dump_json()
     except Exception as e:
-        yield json.dumps({"type": "error", "content": f"Erro no Ollama: {str(e)}"})
+        yield ChatStreamEvent(
+            type="error", content=f"Erro no Ollama: {str(e)}"
+        ).model_dump_json()
     finally:
-        yield json.dumps({"type": "end", "content": ""})
+        yield ChatStreamEvent(type="end", content="").model_dump_json()
