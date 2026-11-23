@@ -2,7 +2,7 @@
 # Lê as configurações de backend/.env e sobe Ollama, Backend e Frontend.
 
 $ErrorActionPreference = "Stop"
-$RootDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$RootDir = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 $EnvFile = Join-Path $RootDir "backend\.env"
 
 # Valores padrão
