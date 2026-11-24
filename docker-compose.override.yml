@@ -1,0 +1,21 @@
+# Configuração adicional para inicialização automática do modelo leve padrão (2.2)
+
+services:
+  ollama-init:
+    image: ollama/ollama:latest
+    container_name: artemis-ollama-init
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-qwen2.5:0.5b}
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "Garantindo modelo $$OLLAMA_MODEL no container Ollama..."
+        ollama pull "$$OLLAMA_MODEL"
+        echo "model pulled: $$OLLAMA_MODEL"
+    networks:
+      - artemis_net
+    restart: "no"

@@ -20,7 +20,7 @@ Evoluir o protótipo de execução local para uma aplicação **pronta para prod
 | # | Status | eprint (título do PR) | Descrição resumida | ✅ Critérios de aceitação |
 |---|--------|-----------------------|-------------------|---------------------------|
 | 2.1 | ✅ Concluído | **feat: configurar volume nomeado `ollama_data`** | Já existe, mas precisa ser documentado e usado no `docker‑compose.yml` para **todos** os serviços (backend e frontend) via `depends_on`. | • `docker compose up -d` persiste modelo entre reinicializações <br>• `docker volume ls` mostra `ollama_data` |
-| 2.2 | ⏳ Pendente | **feat: definir modelo padrão leve (`qwen2.5:0.5b`)** | Atualizar `backend/.env` (para Docker) → `OLLAMA_MODEL=qwen2.5:0.5b`. Criar script `docker‑compose.override.yml` que execute `ollama pull $OLLAMA_MODEL` como *init* do container. | • `docker compose up` baixa automaticamente o modelo leve <br>• `docker logs artemis‑ollama` mostra “model pulled” |
+| 2.2 | ✅ Concluído | **feat: definir modelo padrão leve (`qwen2.5:0.5b`)** | Atualizar `backend/.env` (para Docker) → `OLLAMA_MODEL=qwen2.5:0.5b`. Criar script `docker‑compose.override.yml` que execute `ollama pull $OLLAMA_MODEL` como *init* do container. | • `docker compose up` baixa automaticamente o modelo leve <br>• `docker logs artemis‑ollama` mostra “model pulled” |
 | 2.3 | ⏳ Pendente | **refactor: separar `.env.docker`** | Manter dois arquivos: `.env` (local) e `.env.docker` (Docker). `docker‑compose.yml` referenciar `env_file: .env.docker`. | • `.env.docker` contém apenas variáveis de ambiente Docker <br>• `make docker‑up` carrega corretamente |
 | 2.4 | ⏳ Pendente | **docs: tutorial “Persistência Docker passo‑a‑passo”** | Atualizar `README.md` com seção **Docker → Persistência** (com diagramas Mermaid). | • README renderiza corretamente (GitHub preview) <br>• Usuário consegue reproduzir o fluxo em 5 minutos |
 
@@ -79,7 +79,7 @@ Evoluir o protótipo de execução local para uma aplicação **pronta para prod
 ## 📅 Roadmap (sprint‑wise)
 | Sprint | Duração | Status | Itens Prioritários | Comentário |
 |--------|---------|--------|--------------------|------------|
-| **Sprint 1** | 2 sem | 🟡 Em andamento (4/8) | ~~1.1~~, ~~1.2~~, ~~1.3~~, ~~2.1~~, 2.2, 2.3, 3.1, 3.2 | SSE, schema consolidado, desconexão do cliente e volume `ollama_data` + `depends_on` concluídos; restam 2.2, 2.3, CORS & rate‑limit. |
+| **Sprint 1** | 2 sem | 🟡 Em andamento (5/8) | ~~1.1~~, ~~1.2~~, ~~1.3~~, ~~2.1~~, ~~2.2~~, 2.3, 3.1, 3.2 | SSE, schema consolidado, desconexão do cliente, volume `ollama_data` e modelo leve `qwen2.5:0.5b` concluídos; restam 2.3, CORS & rate‑limit. |
 | **Sprint 2** | 2 sem | ⏳ Pendente | 4.1, 4.2, 4.3, 5.1, 5.2 | Testes e observabilidade – melhorar coverage, instrumentar traces, logs estruturados. |
 | **Sprint 3** | 2 sem | ⏳ Pendente | 2.4, 3.3, 3.4, 6.1, 6.2 | Documentação de persistência, hardening de segurança, CI multi‑arch. |
 | **Sprint 4** | 2 sem | ⏳ Pendente | 7.1, 7.2, 7.3, 7.4, 6.3, 6.4 | Polimento da UI, helm chart e guia de deployment. |
@@ -105,7 +105,7 @@ Evoluir o protótipo de execução local para uma aplicação **pronta para prod
 | `backend/utils/health.py` | ⏳ Pendente | Health‑check de Ollama. | PR 3.4 |
 | `backend/logging.py` | ⏳ Pendente | Configuração `structlog`. | PR 5.2 |
 | `frontend/src/components/LoadingBar.jsx` | ⏳ Pendente | UI spinner de token. | PR 7.1 |
-| `docker-compose.override.yml` | ⏳ Pendente | Executar `ollama pull $OLLAMA_MODEL` na inicialização. | PR 2.2 |
+| `docker-compose.override.yml` | ✅ Concluído | Executar `ollama pull $OLLAMA_MODEL` na inicialização. | PR 2.2 |
 | `chart/Chart.yaml` + `values.yaml` | ⏳ Pendente | Helm chart. | PR 6.3 |
 
 ---

@@ -77,9 +77,9 @@ docker-restart:
 	docker compose up -d
 
 ollama-pull:
-	@echo "📦 Baixando modelo qwen2.5-coder:1.5b no container Ollama..."
+	@echo "📦 Baixando modelo qwen2.5:0.5b no container Ollama..."
 	@echo "⏳ Isso pode demorar um pouco..."
-	docker exec artemis-ollama ollama pull qwen2.5-coder:1.5b
+	docker exec artemis-ollama ollama pull qwen2.5:0.5b
 	@echo "✅ Modelo pronto!"
 
 ollama-list:
