@@ -27,7 +27,7 @@ services:
     ports:
       - "8000:8000"
     env_file:
-      - ./backend/.env
+      - ./backend/.env.docker
     volumes:
       - ./backend/artemis.db:/app/artemis.db  # persiste o banco de dados SQLite
     depends_on:
