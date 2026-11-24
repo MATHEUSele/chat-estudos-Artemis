@@ -10,6 +10,9 @@ class Settings(BaseSettings):
     FRONTEND_URL: str = "http://localhost:5173"
     FRONTEND_URLS: str = "http://localhost:5173,http://localhost,https://matheusele.github.io"
 
+    # Rate limit por IP (SlowAPI)
+    RATE_LIMIT: str = "5/minute"
+
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
     @property

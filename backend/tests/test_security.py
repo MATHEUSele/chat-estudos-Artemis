@@ -27,6 +27,7 @@ def security_client(monkeypatch, tmp_path):
     with TestClient(main.app) as client:
         yield client
 
+    main.limiter.reset()
     asyncio.run(test_engine.dispose())
 
 
@@ -54,3 +55,24 @@ def test_cors_blocks_unconfigured_origin(security_client):
     )
     assert response.status_code == 200
     assert "access-control-allow-origin" not in response.headers
+
+
+def test_health_includes_rate_limit_headers(security_client):
+    response = security_client.get("/health")
+    assert response.status_code == 200
+    lower_headers = {k.lower(): v for k, v in response.headers.items()}
+    assert "x-ratelimit-limit" in lower_headers
+    assert "x-ratelimit-remaining" in lower_headers
+
+
+def test_health_enforces_configurable_rate_limit(monkeypatch, security_client):
+    monkeypatch.setattr(main.settings, "RATE_LIMIT", "2/minute")
+    main.limiter.reset()
+
+    first = security_client.get("/health")
+    second = security_client.get("/health")
+    third = security_client.get("/health")
+
+    assert first.status_code == 200
+    assert second.status_code == 200
+    assert third.status_code == 429

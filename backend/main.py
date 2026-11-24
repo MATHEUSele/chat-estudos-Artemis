@@ -1,5 +1,5 @@
 import logging
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
@@ -11,8 +11,8 @@ from database import engine, Base
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Setup Rate Limiter
-limiter = Limiter(key_func=get_remote_address)
+# Setup Rate Limiter (parametrizável via RATE_LIMIT no .env)
+limiter = Limiter(key_func=get_remote_address, headers_enabled=True)
 
 app = FastAPI(title="Artemis 2.0 API")
 app.state.limiter = limiter
@@ -35,8 +35,8 @@ async def startup_event():
     logger.info("Banco de dados SQLite inicializado com sucesso.")
 
 @app.get("/health")
-@limiter.limit("5/minute")
-async def health_check(request: Request):
+@limiter.limit(lambda: settings.RATE_LIMIT)
+async def health_check(request: Request, response: Response):
     return {"status": "ok", "message": "Artemis Backend Online"}
 
 from controllers import chat_controller
