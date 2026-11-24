@@ -1,17 +1,23 @@
+# Orquestração Docker — Artemis 2.02
+# Ordem de subida garantida por healthchecks:
+#   ollama (healthy) -> backend (healthy) -> frontend
+
 services:
   ollama:
-    image: ollama/ollama
+    image: ollama/ollama:latest
     container_name: artemis-ollama
     volumes:
-      - ollama_data:/root/.ollama   # persiste o modelo entre restarts
+      - ollama_data:/root/.ollama   # volume nomeado: persiste os modelos baixados entre restarts
     ports:
-      - "11434:11434"               # expõe para o host (útil para testes)
+      - "11434:11434"               # expõe para o host (útil para testes e CLI)
     healthcheck:
       test: ["CMD", "ollama", "list"]
       interval: 10s
       timeout: 5s
       retries: 15
       start_period: 10s
+    networks:
+      - artemis_net
     restart: unless-stopped
 
   backend:
@@ -26,7 +32,21 @@ services:
       - ./backend/artemis.db:/app/artemis.db  # persiste o banco de dados SQLite
     depends_on:
       ollama:
-        condition: service_healthy            # aguarda Ollama estar pronto
+        condition: service_healthy            # aguarda Ollama estar saudável antes de subir a API
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - artemis_net
     restart: unless-stopped
 
   frontend:
@@ -36,8 +56,17 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy            # aguarda Backend responder /health antes de subir o Nginx
+    networks:
+      - artemis_net
     restart: unless-stopped
 
+networks:
+  artemis_net:
+    driver: bridge
+
 volumes:
-  ollama_data:   # volume nomeado — modelo persiste entre restarts
+  ollama_data:
+    name: artemis_ollama_data                 # nome fixo para facilitar inspeção via `docker volume ls`
+    driver: local

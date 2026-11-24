@@ -19,7 +19,7 @@ Evoluir o protótipo de execução local para uma aplicação **pronta para prod
 ### 2️⃣ Persistência Docker – Volumes & Modelos
 | # | Status | eprint (título do PR) | Descrição resumida | ✅ Critérios de aceitação |
 |---|--------|-----------------------|-------------------|---------------------------|
-| 2.1 | ⏳ Pendente | **feat: configurar volume nomeado `ollama_data`** | Já existe, mas precisa ser documentado e usado no `docker‑compose.yml` para **todos** os serviços (backend e frontend) via `depends_on`. | • `docker compose up -d` persiste modelo entre reinicializações <br>• `docker volume ls` mostra `ollama_data` |
+| 2.1 | ✅ Concluído | **feat: configurar volume nomeado `ollama_data`** | Já existe, mas precisa ser documentado e usado no `docker‑compose.yml` para **todos** os serviços (backend e frontend) via `depends_on`. | • `docker compose up -d` persiste modelo entre reinicializações <br>• `docker volume ls` mostra `ollama_data` |
 | 2.2 | ⏳ Pendente | **feat: definir modelo padrão leve (`qwen2.5:0.5b`)** | Atualizar `backend/.env` (para Docker) → `OLLAMA_MODEL=qwen2.5:0.5b`. Criar script `docker‑compose.override.yml` que execute `ollama pull $OLLAMA_MODEL` como *init* do container. | • `docker compose up` baixa automaticamente o modelo leve <br>• `docker logs artemis‑ollama` mostra “model pulled” |
 | 2.3 | ⏳ Pendente | **refactor: separar `.env.docker`** | Manter dois arquivos: `.env` (local) e `.env.docker` (Docker). `docker‑compose.yml` referenciar `env_file: .env.docker`. | • `.env.docker` contém apenas variáveis de ambiente Docker <br>• `make docker‑up` carrega corretamente |
 | 2.4 | ⏳ Pendente | **docs: tutorial “Persistência Docker passo‑a‑passo”** | Atualizar `README.md` com seção **Docker → Persistência** (com diagramas Mermaid). | • README renderiza corretamente (GitHub preview) <br>• Usuário consegue reproduzir o fluxo em 5 minutos |
@@ -79,7 +79,7 @@ Evoluir o protótipo de execução local para uma aplicação **pronta para prod
 ## 📅 Roadmap (sprint‑wise)
 | Sprint | Duração | Status | Itens Prioritários | Comentário |
 |--------|---------|--------|--------------------|------------|
-| **Sprint 1** | 2 sem | 🟡 Em andamento (3/8) | ~~1.1~~, ~~1.2~~, ~~1.3~~, 2.1, 2.2, 2.3, 3.1, 3.2 | SSE, schema consolidado e desconexão do cliente concluídos; restam persistência Docker, CORS & rate‑limit. |
+| **Sprint 1** | 2 sem | 🟡 Em andamento (4/8) | ~~1.1~~, ~~1.2~~, ~~1.3~~, ~~2.1~~, 2.2, 2.3, 3.1, 3.2 | SSE, schema consolidado, desconexão do cliente e volume `ollama_data` + `depends_on` concluídos; restam 2.2, 2.3, CORS & rate‑limit. |
 | **Sprint 2** | 2 sem | ⏳ Pendente | 4.1, 4.2, 4.3, 5.1, 5.2 | Testes e observabilidade – melhorar coverage, instrumentar traces, logs estruturados. |
 | **Sprint 3** | 2 sem | ⏳ Pendente | 2.4, 3.3, 3.4, 6.1, 6.2 | Documentação de persistência, hardening de segurança, CI multi‑arch. |
 | **Sprint 4** | 2 sem | ⏳ Pendente | 7.1, 7.2, 7.3, 7.4, 6.3, 6.4 | Polimento da UI, helm chart e guia de deployment. |
@@ -113,5 +113,6 @@ Evoluir o protótipo de execução local para uma aplicação **pronta para prod
 ## ✅ Próximos passos imediatos
 - [x] **1.1 & 1.3 (SSE migration + desconexão do cliente)** — concluído no commit `ef653cc`.
 - [x] **1.2 (consolidar schema `ChatMessage` / `ChatRequest`)** — concluído com validação Pydantic e exposição no OpenAPI.
-- [ ] **2.1 / 2.2 / 2.3 (persistência Docker + `.env.docker`)** — finalizar o ambiente containerizado.
+- [x] **2.1 (volume nomeado `ollama_data` + `depends_on` com healthchecks)** — configurado em `docker-compose.yml` e documentado no `README.md`.
+- [ ] **2.2 / 2.3 (modelo leve padrão + `.env.docker`)** — finalizar a automação do ambiente containerizado.
 - [ ] **2.4 (Documentação de Persistência Docker)** — atualizar o `README.md` com o tutorial passo a passo.

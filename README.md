@@ -116,6 +116,11 @@ Ideal para desenvolvimento e testes rápidos utilizando o Ollama instalado diret
 
 *(Comandos auxiliares: `make docker-down` para parar, `make docker-build` para recompilar e `make docker-logs` para ver o que está rodando em tempo real).*
 
+#### Persistência de Volumes e Ordem de Subida (`depends_on`)
+- **Volume nomeado `ollama_data` (`artemis_ollama_data`):** montado em `/root/.ollama` no serviço `ollama`, garantindo que os modelos baixados persistam entre reinicializações (`docker compose down` / `up`). Confira com `docker volume ls`.
+- **Banco SQLite:** `./backend/artemis.db` é montado em `/app/artemis.db` no container `backend`.
+- **Ordem de subida com healthchecks:** `ollama` (`ollama list`) → `backend` (`/health`) → `frontend` (`nginx`), todos conectados na rede `artemis_net`.
+
 ---
 
 ## 🔐 Configuração do Ambiente
