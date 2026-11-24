@@ -29,7 +29,7 @@ Evoluir o protótipo de execução local para uma aplicação **pronta para prod
 ### 3️⃣ Segurança & Controle de Acesso
 | # | Status | eprint (título do PR) | Descrição resumida | ✅ Critérios de aceitação |
 |---|--------|-----------------------|-------------------|---------------------------|
-| 3.1 | ⏳ Pendente | **feat: habilitar CORS configurável** | Centralizar `allow_origins` em `.env` (`FRONTEND_URLS`) e usar `CORSMiddleware` dinamicamente. | • Só origens listadas são aceitas <br>• Teste de integração falha para origem não autorizada |
+| 3.1 | ✅ Concluído | **feat: habilitar CORS configurável** | Centralizar `allow_origins` em `.env` (`FRONTEND_URLS`) e usar `CORSMiddleware` dinamicamente. | • Só origens listadas são aceitas <br>• Teste de integração falha para origem não autorizada |
 | 3.2 | ⏳ Pendente | **feat: rate‑limit por IP (SlowAPI)** | Parametrizar limite (`RATE_LIMIT=5/minute`) via `.env`. | • Valor pode ser alterado sem code change <br>• Logs exibem `X-RateLimit-Remaining` |
 | 3.3 | ⏳ Pendente | **security: ocultar cabeçalhos de servidor** | Remover `Server: uvicorn` e `X-Powered-By` via `Starlette` middleware. | • Resposta HTTP não contém cabeçalhos de identificação |
 | 3.4 | ⏳ Pendente | **feat: health‑check de Ollama** | Endpoint `/health/ollama` que verifica `http://ollama:11434/api/tags`. | • Retorna `200` somente se Ollama saudável <br>• Utilizado por `docker‑compose` healthcheck |
@@ -79,7 +79,7 @@ Evoluir o protótipo de execução local para uma aplicação **pronta para prod
 ## 📅 Roadmap (sprint‑wise)
 | Sprint | Duração | Status | Itens Prioritários | Comentário |
 |--------|---------|--------|--------------------|------------|
-| **Sprint 1** | 2 sem | 🟡 Em andamento (6/8) | ~~1.1~~, ~~1.2~~, ~~1.3~~, ~~2.1~~, ~~2.2~~, ~~2.3~~, 3.1, 3.2 | SSE, schema consolidado, desconexão do cliente e persistência/ambientes Docker concluídos; restam CORS & rate‑limit. |
+| **Sprint 1** | 2 sem | 🟡 Em andamento (7/8) | ~~1.1~~, ~~1.2~~, ~~1.3~~, ~~2.1~~, ~~2.2~~, ~~2.3~~, ~~3.1~~, 3.2 | SSE, schema consolidado, desconexão, persistência Docker e CORS configurável concluídos; resta apenas o item 3.2 (rate‑limit). |
 | **Sprint 2** | 2 sem | ⏳ Pendente | 4.1, 4.2, 4.3, 5.1, 5.2 | Testes e observabilidade – melhorar coverage, instrumentar traces, logs estruturados. |
 | **Sprint 3** | 2 sem | ⏳ Pendente | 2.4, 3.3, 3.4, 6.1, 6.2 | Documentação de persistência, hardening de segurança, CI multi‑arch. |
 | **Sprint 4** | 2 sem | ⏳ Pendente | 7.1, 7.2, 7.3, 7.4, 6.3, 6.4 | Polimento da UI, helm chart e guia de deployment. |

@@ -18,10 +18,10 @@ app = FastAPI(title="Artemis 2.0 API")
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-# CORS Setup for GitHub Pages
+# CORS Setup (configurável via FRONTEND_URLS / FRONTEND_URL)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_URL, "https://matheusele.github.io"],
+    allow_origins=settings.cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
